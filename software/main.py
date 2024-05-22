@@ -70,25 +70,21 @@ class Login():
         self.check_data() 
 
         if self.message == "":
-            if file_manager.list_account(self.disk):
-                if file_manager.login(self.disk,self.username,self.password):
-                    clear()
-                    Main(self.disk,self.username,self.password)
-                else:
-                    msg = CTkMessagebox(title="Error", message="username or password are wrong", icon="cancel",font = ("Open Sans",20),option_1="Ok",width = 600)
-                    if msg.get() == "Ok":
-                        self.reset()
+            check,message = file_manager.login(self.disk,self.username,self.password)
+            if check:
+                clear()
+                Main(self.disk,self.username,self.password)
             else:
-                msg = CTkMessagebox(title="Error", message="account doesn't exsist", icon="cancel",font = ("Open Sans",20),option_1="Ok")
+                msg = CTkMessagebox(title="Error", message=message, icon="cancel",font = ("Open Sans",20),option_1="Ok",width = 400)
                 if msg.get() == "Ok":
                     self.reset()
-        
+                    
     def new_account_function(self):
         self.check_data() 
             
         if self.message == "":
             if file_manager.new_account(self.disk,self.username,self.password):
-                self.message = CTkMessagebox(title="Info", message="your account has been created!",font = ("Open Sans",20), option_1="Ok")
+                self.message = CTkMessagebox(title="Info", message="your account has been created!",font = ("Open Sans",20), option_1="Ok",icon = "check")
                 if self.message.get() == "Ok":
                     clear()
                     Main(self.disk,self.username,self.password)
@@ -155,9 +151,11 @@ class Main():
         
         if check:
             file_manager.encript(self.disk,self.username,self.password,file)
-            self.message = CTkMessagebox(title="Info", message="your file has been added!",font = ("Open Sans",20), option_1="Ok")
+            self.message = CTkMessagebox(title="Info", message="your file has been added!",font = ("Open Sans",20), option_1="Ok",icon = "check")
+            self.clear()
+            self.show()
         elif file == "already exsist":
-            self.message = CTkMessagebox(title="Info", message=" your file already exists! \n you want to replace it?",font = ("Open Sans",20), option_1="Yes",option_2="No",width = 500)
+            self.message = CTkMessagebox(title="Info", message=" your file already exists! \n you want to replace it?",font = ("Open Sans",20), option_1="Yes",option_2="No",width = 500,icon = "warning")
             if self.message.get() == "Yes":
                 check, file = file_manager.add_file(self.disk,self.username,filename,True)
                 file_manager.encript(self.disk,self.username,self.password,file)
@@ -167,32 +165,75 @@ class Main():
     def encrypt_all(self):
         
         for file in file_manager.list_file(self.disk,self.username):
-            file_manager.encript(self.disk,self.username,self.password,file)
+            
+            head,extension = file_manager.get_file(file)
+            
+            if extension != ".aes": 
+                file_manager.encript(self.disk,self.username,self.password,file)
 
         window.destroy()
 
     def rename(self,file):
         
-        def ren_file(new_file):
+        def disable():
+            list = self.frame.winfo_children()
+            for i in list:
+                try:
+                    i.configure(state = "disabled")
+                except:
+                    pass
+                
+            list = window.winfo_children()
+            for i in list:
+                try:
+                    i.configure(state = "disabled")
+                except:
+                    pass
             
-            print("errore")
-            if new_file != "":
-                file_manager.rename_file(self.disk,self.username,file,new_file)
+        def activate():
+            list = self.frame.winfo_children()
+            for i in list:
+                try:
+                    i.configure(state = "normal")
+                except:
+                    pass
+                
+            list = window.winfo_children()
+            for i in list:
+                try:
+                    i.configure(state = "normal")
+                except:
+                    pass
+            
+            top_level.destroy()
+        
+        def ren_file():
+            if entry.get() != "" and not "." in entry.get() and not " " in entry.get():
+                print("ciao")
+                file_manager.rename_file(self.disk,self.username,file,entry.get())
                 top_level.destroy()
                 self.clear()
                 self.show()
+                activate()
+            else:
+                self.message = CTkMessagebox(title="warning", message="dot and space are not allowed!",font = ("Open Sans",20), option_1="Ok",icon = "warning")
+        
+        disable()
         
         top_level = CTk.CTkToplevel(window)
         top_level.title("")
         top_level.geometry("%d+%d" % (window.winfo_x()+30,window.winfo_y()+30))
         top_level.geometry(f"{data['size']['top_level']['x']}x{data['size']['top_level']['y']}")
         top_level.wm_attributes('-topmost', True)
+        top_level.resizable(False,False)
         
         entry = CTk.CTkEntry(top_level,placeholder_text = "new name",width = 150,font = ("Open Sans",20))
         entry.grid(row = 0,column = 0,padx = (5,0),pady = (10,10))
         
-        button = CTk.CTkButton(top_level,text = "", image = images["enter"],width = 50,command = ren_file(entry.get()))
+        button = CTk.CTkButton(top_level,text = "", image = images["enter"],width = 50,command =  ren_file)
         button.grid(row = 0,column = 1,padx = (0,5),pady = (10,10))
+        
+        top_level.protocol('WM_DELETE_WINDOW',activate)
 
     def open_file(self,file):
 
@@ -201,14 +242,22 @@ class Main():
         window.protocol('WM_DELETE_WINDOW',self.encrypt_all)
  
     def delete_file(self,file):
-        self.message = CTkMessagebox(title="Info", message="Do you want delete your file?",font = ("Open Sans",20), option_1="Yes",option_2="No",width = 500)
+        self.message = CTkMessagebox(title="Question", message="Do you want delete your file?",font = ("Open Sans",20), option_1="Yes",option_2="No",width = 500,icon = "warning")
         if self.message.get() == "Yes":
             file_manager.delete_file(self.disk,self.username,file)
+            self.message = CTkMessagebox(title="Info", message="your file has been destroyed!",font = ("Open Sans",20), option_1="Ok")
+            if self.message.get() == "Ok": 
+                self.clear()
+                self.show()
 
     def delete_account(self):
-        self.message = CTkMessagebox(title="Info", message="Do you want delete your file?",font = ("Open Sans",20), option_1="Yes",option_2="No",width = 500)
+        self.message = CTkMessagebox(title="Question", message="Do you want delete your account?",font = ("Open Sans",20), option_1="Yes",option_2="No",width = 500,icon = "warning")
         if self.message.get() == "Yes":
             file_manager.delete_account(self.disk,self.username)
+            self.message = CTkMessagebox(title="Info", message="your account has been destroyed!",font = ("Open Sans",20), option_1="Ok")
+            if self.message.get() == "Ok": 
+               clear()
+               Login()
     
     def back(self):
         clear()

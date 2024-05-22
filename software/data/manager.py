@@ -27,19 +27,16 @@ class Manager():
             return True
         
     def login(self,disk,username,password):
-        if os.path.exists(f"{disk}\\file_manager\\{username}\\password.txt") and do_decriptography(open(f"{disk}\\file_manager\\{username}\\password.txt", "r").read(),password) == password:
-            return True
+        if os.path.exists(f"{disk}\\file_manager\\{username}\\password.txt"):
+            if do_decriptography(open(f"{disk}\\file_manager\\{username}\\password.txt", "r").read(),password) == password:
+                return True,""
+            else:
+                return False,"passoword wrong"
         else:
-            return False
+            return False,"account doesn't exsist"
         
     def list_file(self,disk,username):
         return os.listdir(f"{disk}\\file_manager\\{username}\\file")
-    
-    def list_account(self,disk):
-        if os.path.exists(f"{disk}\\file_manager"):
-            return True
-        else:
-            return False
         
     def get_file(self,file):
         return os.path.splitext(file)
@@ -77,10 +74,11 @@ class Manager():
             os.remove(f"{disk}\\file_manager\\{username}\\file\\{file}")
 
     def rename_file(self,disk,username,file,new_file):
+        head,extension = os.path.splitext(file)
         if os.path.exists(f"{disk}\\file_manager\\{username}\\file\\{file}.aes"):
-            os.rename(f"{disk}\\file_manager\\{username}\\file\\{file}.aes",f"{disk}\\file_manager\\{username}\\file\\{new_file}.aes")
+            os.rename(f"{disk}\\file_manager\\{username}\\file\\{file}.aes",f"{disk}\\file_manager\\{username}\\file\\{new_file}{extension}.aes")
         else:
-            os.rename(f"{disk}\\file_manager\\{username}\\file\\{file}",f"{disk}\\file_manager\\{username}\\file\\{new_file}")
+            os.rename(f"{disk}\\file_manager\\{username}\\file\\{file}",f"{disk}\\file_manager\\{username}\\file\\{new_file}{extension}")
 
     def delete_account(self,disk,username):
         shutil.rmtree(f"{disk}\\file_manager\\{username}")
