@@ -1,0 +1,25 @@
+{
+    "disk": ["A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","R","S","T","U","V","W","X","Y","Z"],
+    "images": {
+        "enter": "software\\images\\enter.png",
+        "login": "software\\images\\login.png",
+        "new_account": "software\\images\\new_account.png",
+        "lock": "software\\images\\lock.png",
+        "disk": "software\\images\\disk.png",
+        "delete_account": "software\\images\\delete_account.png",
+        "home": "software\\images\\home.png",
+        "unlock": "software\\images\\unlock.png",
+        "open": "software\\images\\open.png",
+        "delete": "software\\images\\delete.png",
+        "add": "software\\images\\add.png",
+        "delete_file": "software\\images\\delete_file.png",
+        "password": "software\\images\\password.png",
+        "rename": "software\\images\\rename.png"
+    },
+    "size": {
+        "login": {"x": 300,"y": 240},
+        "main": {"x": 500,"y": 300},
+        "top_level": {"x": 200,"y": 70}
+    }
+
+}
