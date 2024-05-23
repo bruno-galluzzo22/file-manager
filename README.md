@@ -35,4 +35,15 @@ Le libreria che ho usato per la realizzazione di questo software sono:
  * [customtkinter](https://pypi.org/project/customtkinter/) : per la realizzazione dell'interfaccia grafica
  * [cripthography](https://pypi.org/project/cryptography/): per criptografare la password dell'utente utilizzando l'algoritmo [hashes.SHA256](https://www.hola-cripto.com/glossario-criptovalute/sha256-significato/)
  * [pyAesCrypt](https://pypi.org/project/pyAesCrypt/): per la criptografare i file di ogni utente 
- * [CTkMessagebox](https://pypi.org/project/CTkMessagebox/): per far apparire i vari messaggi 
+ * [CTkMessagebox](https://pypi.org/project/CTkMessagebox/): per far apparire i vari messaggi
+
+## Come scaricare e usare il software
+
+ 1) Crea una cartella chiamata software e aprila con VsCode
+ 2) Apri un terminale git Bash ed esegui il seguente comando: git clone https://github.com/bruno-galluzzo22/file-manager.git
+ 3) Apri un terminale Poweshell e esegui questi comandi: 
+    cd file-manager, 
+    venv\Scripts\Activate.ps1
+    py software/main.py   
+
+Assicurarsi di avere Python installato sul computer su cui si vuole usare il software.  
