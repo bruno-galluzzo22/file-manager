@@ -8,4 +8,31 @@ In questa repository è presenta la cartella:
   
 ## Come si presenta:
 
-![]()
+Prima di tutto si crea un account, inserendo un nome e una password
+
+![](images\new_account.png)
+
+Dopo di che avviene la creazione di un piccolo menu:
+
+![](images\empty.png)
+
+In seguito si clicca sul pulsante al centro per inserire un file;
+
+![](images\file.png)
+![](images\file_added.png)
+
+quello che viene salvato sul disco è questo:
+
+![](images\criptography.png)
+
+Inoltre la password dell'account è stata criptografata usando l'algoritmo hashes.SHA256
+
+![](images\password.png)
+
+## Quali librerie ho usato
+
+Le libreria che ho usato per la realizzazione di questo software sono:
+ * [customtkinter](https://pypi.org/project/customtkinter/) : per la realizzazione dell'interfaccia grafica
+ * [cripthography](https://pypi.org/project/cryptography/): per criptografare la password dell'utente utilizzando l'algoritmo [hashes.SHA256](https://www.hola-cripto.com/glossario-criptovalute/sha256-significato/)
+ * [pyAesCrypt](https://pypi.org/project/pyAesCrypt/): per la criptografare i file di ogni utente 
+ * [CTkMessagebox](https://pypi.org/project/CTkMessagebox/): per far apparire i vari messaggi 
