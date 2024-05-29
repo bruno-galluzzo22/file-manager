@@ -41,7 +41,7 @@ Le libreria che ho usato per la realizzazione di questo software sono:
 
  1) Crea una cartella chiamata software e aprila con VsCode
  2) Apri un terminale git Bash ed esegui il seguente comando: git clone https://github.com/bruno-galluzzo22/file-manager.git
- 3) Apri un terminale Poweshell e esegui questi comandi: 
+ 3) Apri un terminale Poweshell e esegui questi comandi:
     cd file-manager, 
     venv\Scripts\Activate.ps1
     py software/main.py   

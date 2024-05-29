@@ -46,13 +46,17 @@ class Manager():
             head, name = os.path.split(file)
             if replace:
                 shutil.copy(file,f"{disk}\\file_manager\\{username}\\file")
-                return True,name
+                name_modify = str(name).replace(" ","-")
+                os.rename(f"{disk}\\file_manager\\{username}\\file\\{name}",f"{disk}\\file_manager\\{username}\\file\\{name_modify}")
+                return True,name_modify
             else:
                 if os.path.exists(f"{disk}\\file_manager\\{username}\\file\\{name}.aes"):
                     return False,"already exsist"
                 else:
                     shutil.copy(file,f"{disk}\\file_manager\\{username}\\file")
-                    return True,name
+                    name_modify = str(name).replace(" ","-")
+                    os.rename(f"{disk}\\file_manager\\{username}\\file\\{name}",f"{disk}\\file_manager\\{username}\\file\\{name_modify}")
+                    return True,name_modify
         except Exception:
             return False,Exception
         
